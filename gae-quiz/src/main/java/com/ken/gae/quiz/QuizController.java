@@ -2,6 +2,7 @@ package com.ken.gae.quiz;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.cloud.datastore.Entity;
 import com.ken.gae.quiz.model.Quiz;
 
 @RestController()
@@ -37,8 +39,17 @@ public class QuizController {
 	}
 
 	@RequestMapping(path = "/aws-quiz/add", method = RequestMethod.GET)
-	public String addQuizPage() {
-		String htmlString = "<!DOCTYPE html><html><body>Quiz: <p>" //
+	public String addQuizPage(HttpServletRequest httpServletRequest) {
+		String message = httpServletRequest.getParameter("message");
+		String num = httpServletRequest.getParameter("num");
+
+		String htmlString = "<!DOCTYPE html><html><body>";
+
+		if ("success".equals(message) && num != null) {
+			htmlString += "<font color='green'><b>Success added record Quiz " + num + "</b></font><p>";
+		}
+
+		htmlString += "Adding Quiz: <p>" //
 				+ "<form id='quizAdd' action='/aws-quiz/add' method='POST'>" //
 				+ "<table><tr><td>Title: </td><td><textarea name='Title' form='quizAdd' rows=\"5\" cols=\"200\"></textarea></td></tr>" //
 				+ "<tr><td>Description: </td><td><textarea name='Desc' form='quizAdd' rows=\"5\" cols=\"200\"></textarea></td></tr>" //
@@ -57,9 +68,9 @@ public class QuizController {
 			HttpServletResponse response) throws IOException {
 		Long maxNum = dataService.maxNum();
 		Quiz quiz = new Quiz().num(maxNum + 1).answer(answer).choices(choices).title(title).desc(desc);
-		dataService.addQuiz(quiz);
+		Entity addQuiz = dataService.addQuiz(quiz);
 
-		response.sendRedirect("/aws-quiz");
+		response.sendRedirect("/aws-quiz/add?message=success&num=" + addQuiz.getLong(Quiz.NUM));
 	}
 
 	@RequestMapping("/aws-quiz/{id}")

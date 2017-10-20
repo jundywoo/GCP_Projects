@@ -64,7 +64,7 @@ public class QuizDataService implements InitializingBean {
 		return num;
 	}
 
-	public void addQuiz(Quiz quiz) {
+	public Entity addQuiz(Quiz quiz) {
 		IncompleteKey key = keyFactory.newKey(quiz.getNum()); // Key will be assigned once written
 		FullEntity<IncompleteKey> entity = Entity.newBuilder(key) // Create the Entity
 				.set(Quiz.NUM, quiz.getNum()) //
@@ -72,6 +72,8 @@ public class QuizDataService implements InitializingBean {
 				.set(Quiz.DESC, quiz.getDesc()) //
 				.set(Quiz.CHOICES, quiz.getChoices()) //
 				.set(Quiz.ANSWER, quiz.getAnswer()).build();
-		datastore.add(entity); // Save the Entity
+		Entity addedEntity = datastore.add(entity); // Save the Entity
+
+		return addedEntity;
 	}
 }
