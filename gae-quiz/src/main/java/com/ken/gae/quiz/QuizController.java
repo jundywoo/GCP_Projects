@@ -53,7 +53,7 @@ public class QuizController {
 				+ "<form id='quizAdd' action='/aws-quiz/add' method='POST'>" //
 				+ "<table><tr><td>Title: </td><td><textarea name='Title' form='quizAdd' rows=\"5\" cols=\"200\"></textarea></td></tr>" //
 				+ "<tr><td>Description: </td><td><textarea name='Desc' form='quizAdd' rows=\"5\" cols=\"200\"></textarea></td></tr>" //
-				+ "<tr><td>Choices: </td><td><textarea name='Choices' form='quizAdd' rows=\"5\" cols=\"200\"></textarea></td></tr>" //
+				+ "<tr><td>Choices: </td><td><textarea name='Choices' form='quizAdd' rows=\"12\" cols=\"200\"></textarea></td></tr>" //
 				+ "<tr><td>Answer: </td><td><input type='text' name='Answer'></td></tr></table>" //
 				+ "<input type='submit'/>" //
 				+ "</form></body><html>";
