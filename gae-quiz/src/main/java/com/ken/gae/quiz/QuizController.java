@@ -51,9 +51,9 @@ public class QuizController {
 
 		htmlString += "Adding Quiz: <p>" //
 				+ "<form id='quizAdd' action='/aws-quiz/add' method='POST'>" //
-				+ "<table><tr><td>Title: </td><td><textarea name='Title' form='quizAdd' rows=\"5\" cols=\"200\"></textarea></td></tr>" //
-				+ "<tr><td>Description: </td><td><textarea name='Desc' form='quizAdd' rows=\"5\" cols=\"200\"></textarea></td></tr>" //
-				+ "<tr><td>Choices: </td><td><textarea name='Choices' form='quizAdd' rows=\"12\" cols=\"200\"></textarea></td></tr>" //
+				+ "<table><tr><td>Description: </td><td><textarea name='Desc' form='quizAdd' rows=\"10\" cols=\"200\"></textarea></td></tr>" //
+				+ "<tr><td>Question: </td><td><textarea name='Title' form='quizAdd' rows=\"5\" cols=\"200\"></textarea></td></tr>" //
+				+ "<tr><td>Choices: </td><td><textarea name='Choices' form='quizAdd' rows=\"15\" cols=\"200\"></textarea></td></tr>" //
 				+ "<tr><td>Answer: </td><td><input type='text' name='Answer'></td></tr></table>" //
 				+ "<input type='submit'/>" //
 				+ "</form></body><html>";
@@ -80,15 +80,15 @@ public class QuizController {
 		String htmlString = "<!DOCTYPE html><html><body><a href='/aws-quiz'>Quiz List</a><p>Quiz " + id + "  <p>";
 
 		if (quiz != null) {
-			htmlString += "<table border='1'><tr><td><b>Title</b></td><td><h1><pre>" + quiz.getTitle()
-					+ "</pre></h1></td></tr>";
+			htmlString += "<table border='1'>";
 
 			String desc = quiz.getDesc();
 			if (desc != null && !"".equals(desc.trim())) {
 				htmlString += "<tr><td><b>Description</b></td><td><h1><pre>" + desc + "</pre></h1></td></tr>";
 			}
 
-			htmlString += "<tr><td><b>Choices<b></td><td><h3><pre>" + quiz.getChoices() + "</pre></h3></td></tr>" //
+			htmlString += "<tr><td><b>Question</b></td><td><h1><pre>" + quiz.getTitle() + "</pre></h1></td></tr>" //
+					+ "<tr><td><b>Choices<b></td><td><h3><pre>" + quiz.getChoices() + "</pre></h3></td></tr>" //
 					+ "<tr><td><b>Answer</b></td><td><h3><font id='answerBox' color='white'><pre>" + quiz.getAnswer()
 					+ "</pre></h3></font><button onClick='getElementById(\"answerBox\").style.color = \"red\"' >Show Answer</button></td></tr></table><p>";
 		} else {
