@@ -34,11 +34,17 @@ public class QuizDataService implements InitializingBean {
 			return null;
 		}
 
-		Quiz quiz = new Quiz();
-		return quiz.num(entity.getLong(Quiz.NUM)) //
+		Quiz quiz = new Quiz() //
+				.num(entity.getLong(Quiz.NUM)) //
 				.title(entity.getString(Quiz.TITLE)) //
 				.choices(entity.getString(Quiz.CHOICES)) //
 				.answer(entity.getString(Quiz.ANSWER));
+
+		if (entity.contains(Quiz.DESC)) {
+			quiz.desc(entity.getString(Quiz.DESC));
+		}
+
+		return quiz;
 	}
 
 	public Long maxNum() {
@@ -63,6 +69,7 @@ public class QuizDataService implements InitializingBean {
 		FullEntity<IncompleteKey> entity = Entity.newBuilder(key) // Create the Entity
 				.set(Quiz.NUM, quiz.getNum()) //
 				.set(Quiz.TITLE, quiz.getTitle()) //
+				.set(Quiz.DESC, quiz.getDesc()) //
 				.set(Quiz.CHOICES, quiz.getChoices()) //
 				.set(Quiz.ANSWER, quiz.getAnswer()).build();
 		datastore.add(entity); // Save the Entity
