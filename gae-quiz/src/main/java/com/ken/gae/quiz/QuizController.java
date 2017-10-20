@@ -27,8 +27,9 @@ public class QuizController {
 		String htmlString = "<!DOCTYPE html><html><body><p>List: ";
 
 		if (maxNum > 0) {
-			for (int i = 1; i <= maxNum; i++) {
-				htmlString += "<p><a href='/aws-quiz/" + i + "'>Question" + i + "</a>";
+			htmlString += "<a href='/aws-quiz/1'>Quiz 1</a>";
+			for (int i = 2; i <= maxNum; i++) {
+				htmlString += "&nbsp;|&nbsp;<a href='/aws-quiz/" + i + "'>Quiz " + i + "</a>";
 			}
 		} else {
 			htmlString += "<p>No Question in the list";
