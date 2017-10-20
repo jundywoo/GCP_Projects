@@ -2,12 +2,12 @@ package com.ken.gae.quiz.model;
 
 public class Quiz {
 
-	public static final String ID = "id";
+	public static final String NUM = "num";
 	public static final String TITLE = "title";
 	public static final String CHOICES = "choices";
 	public static final String ANSWER = "answer";
 
-	private Long id;
+	private Long num;
 
 	private String title;
 
@@ -15,8 +15,8 @@ public class Quiz {
 
 	private String answer;
 
-	public Quiz id(Long id) {
-		this.id = id;
+	public Quiz num(Long num) {
+		this.num = num;
 		return this;
 	}
 
@@ -35,12 +35,12 @@ public class Quiz {
 		return this;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getNum() {
+		return num;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setNum(Long num) {
+		this.num = num;
 	}
 
 	public String getTitle() {

@@ -16,14 +16,23 @@ import com.ken.gae.quiz.model.Quiz;
 @RestController()
 public class QuizController {
 
-	private static final long MAX_NUM = 55;
-
 	@Autowired
 	QuizDataService dataService;
 
 	@RequestMapping("/aws-quiz")
 	public String list() {
-		String htmlString = "<!DOCTYPE html><html><body><p>List: <p><a href='/aws-quiz/1'>Question 1</a></body><html>";
+		Long maxNum = dataService.maxNum();
+		String htmlString = "<!DOCTYPE html><html><body><p>List: ";
+
+		if (maxNum > 0) {
+			for (int i = 1; i <= maxNum; i++) {
+				htmlString += "<p><a href='/aws-quiz/" + i + "'>Question" + i + "</a>";
+			}
+		} else {
+			htmlString += "<p>No Question in the list";
+		}
+
+		htmlString += "</body><html>";
 		return htmlString;
 	}
 
@@ -31,7 +40,7 @@ public class QuizController {
 	public String addQuizPage() {
 		String htmlString = "<!DOCTYPE html><html><body>Quiz: <p>" //
 				+ "<form id='quizAdd' action='/aws-quiz/add' method='POST'>" //
-				+ "<table><tr><td>Title: </td><td><input type='text' name='Title'/></td></tr>" //
+				+ "<table><tr><td>Title: </td><td><textarea name='Title'form='quizAdd'></textarea></td></tr>" //
 				+ "<tr><td>Choices: </td><td><textarea name='Choices' form='quizAdd'></textarea></td></tr>" //
 				+ "<tr><td>Answer: </td><td><input type='text' name='Answer'></td></tr></table>" //
 				+ "<input type='submit'/>" //
@@ -44,7 +53,8 @@ public class QuizController {
 			@RequestParam("Choices") String choices, //
 			@RequestParam("Answer") String answer, //
 			HttpServletResponse response) throws IOException {
-		Quiz quiz = new Quiz().answer(answer).choices(choices).title(title);
+		Long maxNum = dataService.maxNum();
+		Quiz quiz = new Quiz().num(maxNum + 1).answer(answer).choices(choices).title(title);
 		dataService.addQuiz(quiz);
 
 		response.sendRedirect("/aws-quiz");
@@ -52,26 +62,27 @@ public class QuizController {
 
 	@RequestMapping("/aws-quiz/{id}")
 	public String getQuiz(@PathVariable("id") Long id) {
+		Long maxNum = dataService.maxNum();
 		Quiz quiz = dataService.readQuiz(id);
 		String htmlString = "<!DOCTYPE html><html><body>Quiz " + id + "  <p>";
 
 		if (quiz != null) {
-			htmlString += "<table><tr><td>Title: </td><td>" + quiz.getTitle() + "</td></tr>" //
-					+ "<tr><td>Choices: </td><td>" + quiz.getChoices() + "</td></tr>" //
-					+ "<tr><td>Answer: </td><td><font color='write'>" + quiz.getAnswer()
-					+ "</font></td></tr></table><p>";
+			htmlString += "<table><tr><td>Title: </td><td><pre>" + quiz.getTitle() + "</pre></td></tr>" //
+					+ "<tr><td>Choices: </td><td><pre>" + quiz.getChoices() + "</pre></td></tr>" //
+					+ "<tr><td>Answer: </td><td><font color='write'><pre>" + quiz.getAnswer()
+					+ "</pre></font></td></tr></table><p>";
 		} else {
 			htmlString += "Question Not found<p>";
 		}
 
 		if (id > 1) {
-			htmlString += "<a href='/aws-quiz/" + (id - 1) + "'>Previous Quiz</a><p>";
+			htmlString += "<a href='/aws-quiz/" + (id - 1) + "'>Previous Quiz</a>";
 		}
-		if (id < MAX_NUM) {
-			htmlString += "<a href='/aws-quiz/" + (id + 1) + "'>Next Quiz</a><p>";
+		if (id < maxNum) {
+			htmlString += "&nbsp;&nbsp;&nbsp;&nbsp;<a href='/aws-quiz/" + (id + 1) + "'>Next Quiz</a>";
 		}
 
-		htmlString += "</body><html>";
+		htmlString += "<p><a href='/aws-quiz'>Quiz List</a></body><html>";
 		return htmlString;
 	}
 
