@@ -1,6 +1,7 @@
 package com.ken.gae.quiz;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,17 +14,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.cloud.datastore.Entity;
+import com.ken.gae.quiz.dao.QuizCommentDao;
+import com.ken.gae.quiz.dao.QuizDao;
 import com.ken.gae.quiz.model.Quiz;
+import com.ken.gae.quiz.model.QuizComment;
 
 @RestController()
 public class QuizController {
 
 	@Autowired
-	QuizDataService dataService;
+	QuizDao quizDao;
+
+	@Autowired
+	QuizCommentDao commentDao;
 
 	@RequestMapping("/aws-quiz")
 	public String list() {
-		Long maxNum = dataService.maxNum();
+		Long maxNum = quizDao.maxNum();
 		String htmlString = "<!DOCTYPE html><html><body><p>List: ";
 
 		if (maxNum > 0) {
@@ -67,17 +74,29 @@ public class QuizController {
 			@RequestParam("Choices") String choices, //
 			@RequestParam("Answer") String answer, //
 			HttpServletResponse response) throws IOException {
-		Long maxNum = dataService.maxNum();
+		Long maxNum = quizDao.maxNum();
 		Quiz quiz = new Quiz().num(maxNum + 1).answer(answer).choices(choices).title(title).desc(desc);
-		Entity addQuiz = dataService.addQuiz(quiz);
+		Entity addQuiz = quizDao.addQuiz(quiz);
 
 		response.sendRedirect("/aws-quiz/add?message=success&num=" + addQuiz.getLong(Quiz.NUM));
 	}
 
+	@RequestMapping(path = "/aws-quiz/{id}/comment", method = RequestMethod.POST)
+	public void addQuizComment(@PathVariable("id") Long id, //
+			@RequestParam("author") String author, //
+			@RequestParam("comment") String comment, //
+			HttpServletResponse response) throws IOException {
+		QuizComment quizComment = new QuizComment().num(id).author(author).comment(comment);
+
+		commentDao.addComment(quizComment);
+
+		response.sendRedirect("/aws-quiz/" + id);
+	}
+
 	@RequestMapping("/aws-quiz/{id}")
 	public String getQuiz(@PathVariable("id") Long id) {
-		Long maxNum = dataService.maxNum();
-		Quiz quiz = dataService.readQuiz(id);
+		Long maxNum = quizDao.maxNum();
+		Quiz quiz = quizDao.readQuiz(id);
 		String htmlString = "<!DOCTYPE html><html><body><a href='/aws-quiz'>Quiz List</a><p>Quiz " + id + "  <p>";
 
 		if (quiz != null) {
@@ -88,10 +107,38 @@ public class QuizController {
 				htmlString += "<tr><td><b>Description</b></td><td><h1><pre>" + desc + "</pre></h1></td></tr>";
 			}
 
+			List<QuizComment> comments = commentDao.readCommenByQuiz(id);
 			htmlString += "<tr><td><b>Question</b></td><td><h1><pre>" + quiz.getTitle() + "</pre></h1></td></tr>" //
 					+ "<tr><td><b>Choices<b></td><td><h3><pre>" + quiz.getChoices() + "</pre></h3></td></tr>" //
 					+ "<tr><td><b>Answer</b></td><td><h3><font id='answerBox' color='white'><pre>" + quiz.getAnswer()
-					+ "</pre></h3></font><button onClick='getElementById(\"answerBox\").style.color = \"red\"' >Show Answer</button></td></tr></table><p>";
+					+ "</pre></h3></font><button onClick='getElementById(\"answerBox\").style.color = \"red\"' >Show Answer</button></td></tr>"
+					+ "<tr><td><b>" + (comments.isEmpty() ? "No Comment" : "Comment (" + comments.size() + ")")
+					+ "</td><td>";
+
+			String addCommentHtml = "<button id='addComment' onclick='getElementById(\"addComment\").style.display=\"none\";"
+					+ "getElementById(\"commentForm\").style.display=\"block\" ' >Add Comment</button><div id='commentForm' style='display: none'>"
+					+ "<form id='commentAdd' action='/aws-quiz/" + id + "/comment' method='POST'>"
+					+ "<table><tr><td>Author:</td><td><input name='author' /></td></tr>"
+					+ "<tr><td>Comment:</td><td><textarea name='comment' form='commentAdd'  rows='5' cols='200'></textarea></table>"
+					+ "<input type='submit'/></form></div>";
+
+			if (comments.isEmpty()) {
+				htmlString += addCommentHtml;
+			} else {
+				QuizComment comment = comments.get(0);
+				htmlString += "<button id='btnShowComment' onClick='getElementById(\"commentBox\").style.display = \"block\"; "
+						+ "getElementById(\"btnShowComment\").style.display=\"none\" ' >Show Comment</button>"
+						+ "<div id='commentBox' style='display:none'>" + addCommentHtml + comment.getHtml();
+
+				for (int i = 1, size = comments.size(); i < size; i++) {
+					comment = comments.get(i);
+					htmlString += "<hr />" + comment.getHtml();
+				}
+
+				htmlString += "</div>";
+			}
+
+			htmlString += "</td></tr></table><p>";
 		} else {
 			htmlString += "Question Not found<p>";
 		}

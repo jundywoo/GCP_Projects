@@ -1,4 +1,4 @@
-package com.ken.gae.quiz;
+package com.ken.gae.quiz.dao;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
@@ -14,9 +14,12 @@ import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.Value;
 import com.ken.gae.quiz.model.Quiz;
+import com.ken.gae.quiz.utils.MyValueUtils;
 
 @Service
-public class QuizDataService implements InitializingBean {
+public class QuizDao implements InitializingBean {
+
+	public static final String KIND_NAME = "quiz";
 
 	private Datastore datastore;
 	private KeyFactory keyFactory;
@@ -24,7 +27,7 @@ public class QuizDataService implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		datastore = DatastoreOptions.getDefaultInstance().getService(); // Authorized Datastore service
-		keyFactory = datastore.newKeyFactory().setKind("quiz");
+		keyFactory = datastore.newKeyFactory().setKind(KIND_NAME);
 	}
 
 	public Quiz readQuiz(Long num) {
@@ -48,7 +51,7 @@ public class QuizDataService implements InitializingBean {
 	}
 
 	public Long maxNum() {
-		String gqlQuery = "select num from quiz order by num desc";
+		String gqlQuery = "select num from " + KIND_NAME + " order by num desc";
 		Query<?> query = Query.newGqlQueryBuilder(gqlQuery).build();
 		QueryResults<?> results = datastore.run(query);
 		Long num = 0L;
@@ -69,9 +72,9 @@ public class QuizDataService implements InitializingBean {
 		FullEntity<IncompleteKey> entity = Entity.newBuilder(key) // Create the Entity
 				.set(Quiz.NUM, quiz.getNum()) //
 				.set(Quiz.TITLE, quiz.getTitle()) //
-				.set(Quiz.DESC, quiz.getDesc()) //
-				.set(Quiz.CHOICES, quiz.getChoices()) //
-				.set(Quiz.ANSWER, quiz.getAnswer()).build();
+				.set(Quiz.DESC, MyValueUtils.noIndexString(quiz.getDesc())) //
+				.set(Quiz.CHOICES, MyValueUtils.noIndexString(quiz.getChoices())) //
+				.set(Quiz.ANSWER, MyValueUtils.noIndexString(quiz.getAnswer())).build();
 		Entity addedEntity = datastore.add(entity); // Save the Entity
 
 		return addedEntity;
