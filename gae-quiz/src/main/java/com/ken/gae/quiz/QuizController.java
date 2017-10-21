@@ -110,8 +110,10 @@ public class QuizController {
 			List<QuizComment> comments = commentDao.readCommenByQuiz(id);
 			htmlString += "<tr><td><b>Question</b></td><td><h1><pre>" + quiz.getTitle() + "</pre></h1></td></tr>" //
 					+ "<tr><td><b>Choices<b></td><td><h3><pre>" + quiz.getChoices() + "</pre></h3></td></tr>" //
-					+ "<tr><td><b>Answer</b></td><td><h3><font id='answerBox' color='white'><pre>" + quiz.getAnswer()
-					+ "</pre></h3></font><button onClick='getElementById(\"answerBox\").style.color = \"red\"' >Show Answer</button></td></tr>"
+					+ "<tr><td><b>Answer</b></td><td><h3><font id='answerBox' color='red'>"
+					+ "<div id='divAnswer' style='display: none'>" + quiz.getAnswer()
+					+ "</div></h3></font><button id='btnAnswer' onClick='getElementById(\"divAnswer\").style.display=\"block\"; "
+					+ "getElementById(\"btnAnswer\").style.display=\"none\"; ' >Show Answer</button></td></tr>"
 					+ "<tr><td><b>" + (comments.isEmpty() ? "No Comment" : "Comment (" + comments.size() + ")")
 					+ "</td><td>";
 
