@@ -2,6 +2,7 @@ package com.ken.gae.quiz.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class QuizComment implements Comparable<QuizComment> {
 
@@ -69,6 +70,7 @@ public class QuizComment implements Comparable<QuizComment> {
 
 	public String getHtml() {
 		final SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		format.setTimeZone(TimeZone.getTimeZone("Asia/Hong_Kong"));
 		return "<p><i><b>" + this.getAuthor() + "</b> comments at <b>" + format.format(this.getDate())
 				+ "</b></i><p><div style='width: 60%'><pre style='white-space:pre-line;'>" + this.comment
 				+ "</pre></div>";
