@@ -1,4 +1,4 @@
-package com.hsbc.global.risk.simba.security.config;
+package com.ken.gae.quiz.config;
 
 import java.io.IOException;
 
@@ -11,20 +11,19 @@ import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.io.Resource;
 
 @Configuration
 public class EnableSSLConfiguration {
-		
+
 	@Bean
-	@DependsOn("encryptedPropertyPlaceholderConfigurer")
-	public EmbeddedServletContainerFactory servletContainer(
-			@Value("${server.port}") int serverPort,
-			@Value("${server.port.ssl}") int serverPortSSL,
-			@Value("${server.truststore}") Resource keystoreFile,
-			@Value("${server.truststoreType}") String keystoreType,
-			@Value("${server.truststore.password}") String keystorePassword,
+	public EmbeddedServletContainerFactory servletContainer( //
+			@Value("${server.ssl.restriction:false}") final boolean restriction, //
+			@Value("${server.port:80}") int serverPort, //
+			@Value("${server.port.ssl:443}") int serverPortSSL, //
+			@Value("${server.truststoreType:JKS}") String keystoreType, //
+			@Value("${server.truststore}") Resource keystoreFile, //
+			@Value("${server.truststore.password}") String keystorePassword, //
 			@Value("${server.truststore.alias}") String keystoreAlias) throws IOException {
 		TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
 			@Override
@@ -34,12 +33,15 @@ public class EnableSSLConfiguration {
 				SecurityCollection collection = new SecurityCollection();
 				collection.addPattern("/*");
 				securityConstraint.addCollection(collection);
-				context.addConstraint(securityConstraint);
+
+				if (restriction) {
+					context.addConstraint(securityConstraint);
+				}
 			}
 		};
 
 		final String keystoreFilePath = keystoreFile.getFile().getAbsolutePath();
-		
+
 		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
 		connector.setScheme("https");
 		connector.setPort(serverPortSSL);
@@ -52,21 +54,19 @@ public class EnableSSLConfiguration {
 		connector.setAttribute("SSLEnabled", true);
 		connector.setAttribute("sslProtocol", "TLS");
 		connector.setAttribute("sslEnabledProtocols", "TLSv1,TLSv1.1,TLSv1.2");
-		connector.setAttribute("ciphers", "TLS_DHE_RSA_WITH_AES_128_CBC_SHA256," 
-						+ "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256,"
-						+ "TLS_DHE_DSS_WITH_AES_128_CBC_SHA," 
-						+ "TLS_RSA_WITH_AES_128_CBC_SHA,"
-						+ "TLS_RSA_WITH_AES_128_CBC_SHA256," 
-						+ "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,"
+		connector.setAttribute("ciphers",
+				"TLS_DHE_RSA_WITH_AES_128_CBC_SHA256," + "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256,"
+						+ "TLS_DHE_DSS_WITH_AES_128_CBC_SHA," + "TLS_RSA_WITH_AES_128_CBC_SHA,"
+						+ "TLS_RSA_WITH_AES_128_CBC_SHA256," + "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,"
 						+ "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256");
 		connector.setAttribute("clientAuth", false);
 		connector.setAttribute("keystoreFile", keystoreFilePath);
 		connector.setAttribute("keystoreType", keystoreType);
 		connector.setAttribute("keystorePass", keystorePassword);
 		connector.setAttribute("keystoreAlias", keystoreAlias);
-		
+
 		tomcat.addAdditionalTomcatConnectors(connector);
 		return tomcat;
 	}
-	
+
 }
