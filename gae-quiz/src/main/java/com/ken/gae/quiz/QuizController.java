@@ -23,15 +23,18 @@ import com.ken.gae.quiz.model.QuizComment;
 public class QuizController {
 
 	@Autowired
-	QuizDao quizDao;
+	private QuizDao quizDao;
 
 	@Autowired
-	QuizCommentDao commentDao;
+	private QuizCommentDao commentDao;
+
+	private static final String HTML_HEADER = "<!DOCTYPE html><html><head><title>Kennie's Quiz</title>"
+			+ "<link rel=\"shortcut icon\" href=\"https://storage.googleapis.com/kennie-quiz.appspot.com/quiz-icon.ico\"></head><body>";
 
 	@RequestMapping("/aws-quiz")
 	public String list() {
 		Long maxNum = quizDao.maxNum();
-		String htmlString = "<!DOCTYPE html><html><body><p>List: ";
+		String htmlString = HTML_HEADER + "<p>List: ";
 
 		if (maxNum > 0) {
 			htmlString += "<a href='/aws-quiz/1'>Quiz 1</a>";
@@ -51,7 +54,7 @@ public class QuizController {
 		String message = httpServletRequest.getParameter("message");
 		String num = httpServletRequest.getParameter("num");
 
-		String htmlString = "<!DOCTYPE html><html><body>";
+		String htmlString = HTML_HEADER + "";
 
 		if ("success".equals(message) && num != null) {
 			htmlString += "<font color='green'><b>Success added record Quiz " + num + "</b></font><p>";
@@ -97,7 +100,7 @@ public class QuizController {
 	public String getQuiz(@PathVariable("id") Long id) {
 		Long maxNum = quizDao.maxNum();
 		Quiz quiz = quizDao.readQuiz(id);
-		String htmlString = "<!DOCTYPE html><html><body><a href='/aws-quiz'>Quiz List</a><p>Quiz " + id + "  <p>";
+		String htmlString = HTML_HEADER + "<a href='/aws-quiz'>Quiz List</a><p>Quiz " + id + "  <p>";
 
 		if (quiz != null) {
 			htmlString += "<table border='1'>";
