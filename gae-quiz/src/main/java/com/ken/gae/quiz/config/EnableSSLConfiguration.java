@@ -18,7 +18,7 @@ public class EnableSSLConfiguration {
 
 	@Bean
 	public EmbeddedServletContainerFactory servletContainer( //
-			@Value("${server.ssl.restriction:false}") final boolean restriction, //
+			@Value("${server.enable.redirect:false}") final boolean redirect, //
 			@Value("${server.port:80}") int serverPort, //
 			@Value("${server.port.ssl:443}") int serverPortSSL, //
 			@Value("${server.truststoreType:JKS}") String keystoreType, //
@@ -28,13 +28,13 @@ public class EnableSSLConfiguration {
 		TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
 			@Override
 			protected void postProcessContext(Context context) {
-				SecurityConstraint securityConstraint = new SecurityConstraint();
-				securityConstraint.setUserConstraint("CONFIDENTIAL");
-				SecurityCollection collection = new SecurityCollection();
-				collection.addPattern("/*");
-				securityConstraint.addCollection(collection);
+				if (redirect) {
+					SecurityConstraint securityConstraint = new SecurityConstraint();
+					securityConstraint.setUserConstraint("CONFIDENTIAL");
+					SecurityCollection collection = new SecurityCollection();
+					collection.addPattern("/*");
+					securityConstraint.addCollection(collection);
 
-				if (restriction) {
 					context.addConstraint(securityConstraint);
 				}
 			}
