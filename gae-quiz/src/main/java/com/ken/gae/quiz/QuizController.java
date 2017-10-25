@@ -32,7 +32,7 @@ public class QuizController {
 			+ "<link rel=\"shortcut icon\" href=\"https://storage.googleapis.com/kennie-quiz.appspot.com/quiz-icon.ico\"></head><body>";
 
 	@RequestMapping(path = "/", method = RequestMethod.GET)
-	public String addQuizPage(HttpServletRequest httpServletRequest) {
+	public String index(HttpServletRequest httpServletRequest) {
 		String htmlString = HTML_HEADER;
 
 		htmlString += "<h1>Hi, Welcome to my Serve" //
