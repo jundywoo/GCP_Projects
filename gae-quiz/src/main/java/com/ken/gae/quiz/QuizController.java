@@ -35,7 +35,7 @@ public class QuizController {
 	public String index(HttpServletRequest httpServletRequest) {
 		String htmlString = HTML_HEADER;
 
-		htmlString += "<h1>Hi, Welcome to my Serve" //
+		htmlString += "<h1>Hi, Welcome to my Server</h1><p>" //
 				+ "Goto <a href='https://www.kennie-ng.cc/aws-quiz'>AWS Quiz - Developer Associate</a>" //
 				+ "<p><h3>For the server breaking through</h3>" //
 				+ "<table style='border: 0; '><tr><td>Server</td><td>&lt;See the server FQDN in the URL&gt;</td></tr>" //
