@@ -31,6 +31,20 @@ public class QuizController {
 	private static final String HTML_HEADER = "<!DOCTYPE html><html><head><title>Kennie's Quiz</title>"
 			+ "<link rel=\"shortcut icon\" href=\"https://storage.googleapis.com/kennie-quiz.appspot.com/quiz-icon.ico\"></head><body>";
 
+	@RequestMapping(path = "/", method = RequestMethod.GET)
+	public String addQuizPage(HttpServletRequest httpServletRequest) {
+		String htmlString = HTML_HEADER;
+
+		htmlString += "<h1>Hi, Welcome to my Serve" //
+				+ "Goto <a href='https://www.kennie-ng.cc/aws-quiz'>AWS Quiz - Developer Associate</a>" //
+				+ "<p><h3>For the server breaking through</h3>" //
+				+ "<table style='border: 0; '><tr><td>Server</td><td>&lt;See the server FQDN in the URL&gt;</td></tr>" //
+				+ "<tr><td>Port</td><td>13348</td></tr>" // 
+				+ "<tr><td>Encrtypion</td><td>AES-256-CFB</td></tr>" //
+				+ "<tr><td>Password</td><td>&lt;Contract me on Wechat, SMS etc.&gt;</td></tr></table></body><html>";
+		return htmlString;
+	}
+	
 	@RequestMapping("/aws-quiz")
 	public String list() {
 		Long maxNum = quizDao.maxNum();
@@ -54,7 +68,7 @@ public class QuizController {
 		String message = httpServletRequest.getParameter("message");
 		String num = httpServletRequest.getParameter("num");
 
-		String htmlString = HTML_HEADER + "";
+		String htmlString = HTML_HEADER;
 
 		if ("success".equals(message) && num != null) {
 			htmlString += "<font color='green'><b>Success added record Quiz " + num + "</b></font><p>";
