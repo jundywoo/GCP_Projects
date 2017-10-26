@@ -37,7 +37,7 @@ public class QuizController {
 				+ "<link rel=\"shortcut icon\" href=\"https://storage.googleapis.com/kennie-ng/hybrid_cloud.ico\"></head><body>";
 
 		htmlString += "<h1>Hi, Welcome to my Server</h1><p>" //
-				+ "Goto <a href='/aws-quiz'>AWS Quiz - Developer Associate</a>" //
+				+ "Goto <a href='/aws-cda-quiz'>AWS Quiz - Developer Associate</a>" //
 				+ "<p><h3>For the server breaking through</h3>" //
 				+ "<table style='border: 0; '><tr><td>Server</td><td>&lt;See the server FQDN in the URL&gt;</td></tr>" //
 				+ "<tr><td>Port</td><td>13348</td></tr>" //
@@ -46,15 +46,15 @@ public class QuizController {
 		return htmlString;
 	}
 
-	@RequestMapping("/aws-quiz")
+	@RequestMapping("/aws-cda-quiz")
 	public String list() {
 		Long maxNum = quizDao.maxNum();
-		String htmlString = HTML_HEADER + "AWS Quiz" + HTML_HEADER2 + "<p>List: ";
+		String htmlString = HTML_HEADER + "AWS Quiz" + HTML_HEADER2 + "<a href='/'>Home</a><p>List: ";
 
 		if (maxNum > 0) {
-			htmlString += "<a href='/aws-quiz/1'>Quiz 1</a>";
+			htmlString += "<a href='/aws-cda-quiz/1'>Quiz 1</a>";
 			for (int i = 2; i <= maxNum; i++) {
-				htmlString += "&nbsp;|&nbsp;<a href='/aws-quiz/" + i + "'>Quiz " + i + "</a>";
+				htmlString += "&nbsp;|&nbsp;<a href='/aws-cda-quiz/" + i + "'>Quiz " + i + "</a>";
 			}
 		} else {
 			htmlString += "<p>No Question in the list";
@@ -64,7 +64,7 @@ public class QuizController {
 		return htmlString;
 	}
 
-	@RequestMapping(path = "/aws-quiz/add", method = RequestMethod.GET)
+	@RequestMapping(path = "/aws-cda-quiz/add", method = RequestMethod.GET)
 	public String addQuizPage(HttpServletRequest httpServletRequest) {
 		String message = httpServletRequest.getParameter("message");
 		String num = httpServletRequest.getParameter("num");
@@ -76,7 +76,7 @@ public class QuizController {
 		}
 
 		htmlString += "Adding Quiz: <p>" //
-				+ "<form id='quizAdd' action='/aws-quiz/add' method='POST'>" //
+				+ "<form id='quizAdd' action='/aws-cda-quiz/add' method='POST'>" //
 				+ "<table><tr><td>Description: </td><td><textarea name='Desc' form='quizAdd' rows=\"10\" cols=\"200\"></textarea></td></tr>" //
 				+ "<tr><td>Question: </td><td><textarea name='Title' form='quizAdd' rows=\"5\" cols=\"200\"></textarea></td></tr>" //
 				+ "<tr><td>Choices: </td><td><textarea name='Choices' form='quizAdd' rows=\"15\" cols=\"200\"></textarea></td></tr>" //
@@ -86,7 +86,7 @@ public class QuizController {
 		return htmlString;
 	}
 
-	@RequestMapping(path = "/aws-quiz/add", method = RequestMethod.POST)
+	@RequestMapping(path = "/aws-cda-quiz/add", method = RequestMethod.POST)
 	public void addQuiz(@RequestParam("Title") String title, //
 			@RequestParam("Desc") String desc, //
 			@RequestParam("Choices") String choices, //
@@ -96,10 +96,10 @@ public class QuizController {
 		Quiz quiz = new Quiz().num(maxNum + 1).answer(answer).choices(choices).title(title).desc(desc);
 		Entity addQuiz = quizDao.addQuiz(quiz);
 
-		response.sendRedirect("/aws-quiz/add?message=success&num=" + addQuiz.getLong(Quiz.NUM));
+		response.sendRedirect("/aws-cda-quiz/add?message=success&num=" + addQuiz.getLong(Quiz.NUM));
 	}
 
-	@RequestMapping(path = "/aws-quiz/{id}/comment", method = RequestMethod.POST)
+	@RequestMapping(path = "/aws-cda-quiz/{id}/comment", method = RequestMethod.POST)
 	public void addQuizComment(@PathVariable("id") Long id, //
 			@RequestParam("author") String author, //
 			@RequestParam("comment") String comment, //
@@ -108,15 +108,15 @@ public class QuizController {
 
 		commentDao.addComment(quizComment);
 
-		response.sendRedirect("/aws-quiz/" + id);
+		response.sendRedirect("/aws-cda-quiz/" + id);
 	}
 
-	@RequestMapping("/aws-quiz/{id}")
+	@RequestMapping("/aws-cda-quiz/{id}")
 	public String getQuiz(@PathVariable("id") Long id) {
 		Long maxNum = quizDao.maxNum();
 		Quiz quiz = quizDao.readQuiz(id);
-		String htmlString = HTML_HEADER + "Quiz " + id + HTML_HEADER2 + "<a href='/aws-quiz'>Quiz List</a><p>Quiz " + id
-				+ "  <p>";
+		String htmlString = HTML_HEADER + "Quiz " + id + HTML_HEADER2 + "<a href='/aws-cda-quiz'>Quiz List</a><p>Quiz "
+				+ id + "  <p>";
 
 		if (quiz != null) {
 			htmlString += "<table border='1'>";
@@ -138,7 +138,7 @@ public class QuizController {
 
 			String addCommentHtml = "<button id='addComment' onclick='getElementById(\"addComment\").style.display=\"none\";"
 					+ "getElementById(\"commentForm\").style.display=\"block\" ' >Add Comment</button><div id='commentForm' style='display: none'>"
-					+ "<form id='commentAdd' action='/aws-quiz/" + id + "/comment' method='POST'>"
+					+ "<form id='commentAdd' action='/aws-cda-quiz/" + id + "/comment' method='POST'>"
 					+ "<table><tr><td>Author:</td><td><input name='author' /></td></tr>"
 					+ "<tr><td>Comment:</td><td><textarea name='comment' form='commentAdd'  rows='5' cols='200'></textarea></table>"
 					+ "<input type='submit'/></form></div>";
@@ -165,10 +165,10 @@ public class QuizController {
 		}
 
 		if (id > 1) {
-			htmlString += "<a href='/aws-quiz/" + (id - 1) + "'>Previous Quiz</a>";
+			htmlString += "<a href='/aws-cda-quiz/" + (id - 1) + "'>Previous Quiz</a>";
 		}
 		if (id < maxNum) {
-			htmlString += "&nbsp;&nbsp;&nbsp;&nbsp;<a href='/aws-quiz/" + (id + 1) + "'>Next Quiz</a>";
+			htmlString += "&nbsp;&nbsp;&nbsp;&nbsp;<a href='/aws-cda-quiz/" + (id + 1) + "'>Next Quiz</a>";
 		}
 
 		htmlString += "</body><html>";
