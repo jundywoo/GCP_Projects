@@ -1,4 +1,4 @@
-package com.ken.gae.quiz.dao;
+package com.ken.gcp.quiz.dao;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
@@ -13,8 +13,8 @@ import com.google.cloud.datastore.ProjectionEntity;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.Value;
-import com.ken.gae.quiz.model.Quiz;
-import com.ken.gae.quiz.utils.MyValueUtils;
+import com.ken.gcp.quiz.model.Quiz;
+import com.ken.gcp.quiz.utils.MyValueUtils;
 
 @Service
 public class QuizDao implements InitializingBean {

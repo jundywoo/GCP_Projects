@@ -1,4 +1,4 @@
-package com.ken.gae.quiz.utils;
+package com.ken.gcp.quiz.utils;
 
 import com.google.cloud.datastore.StringValue;
 

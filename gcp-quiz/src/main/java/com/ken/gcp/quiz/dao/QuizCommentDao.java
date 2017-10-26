@@ -1,4 +1,4 @@
-package com.ken.gae.quiz.dao;
+package com.ken.gcp.quiz.dao;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,8 +17,8 @@ import com.google.cloud.datastore.IncompleteKey;
 import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
-import com.ken.gae.quiz.model.QuizComment;
-import com.ken.gae.quiz.utils.MyValueUtils;
+import com.ken.gcp.quiz.model.QuizComment;
+import com.ken.gcp.quiz.utils.MyValueUtils;
 
 @Service
 public class QuizCommentDao implements InitializingBean {

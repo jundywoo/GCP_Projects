@@ -1,4 +1,4 @@
-package com.ken.gae.quiz;
+package com.ken.gcp.quiz;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.cloud.datastore.Entity;
-import com.ken.gae.quiz.dao.QuizCommentDao;
-import com.ken.gae.quiz.dao.QuizDao;
-import com.ken.gae.quiz.model.Quiz;
-import com.ken.gae.quiz.model.QuizComment;
+import com.ken.gcp.quiz.dao.QuizCommentDao;
+import com.ken.gcp.quiz.dao.QuizDao;
+import com.ken.gcp.quiz.model.Quiz;
+import com.ken.gcp.quiz.model.QuizComment;
 
 @RestController()
 public class QuizController {

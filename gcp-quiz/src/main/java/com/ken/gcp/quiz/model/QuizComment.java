@@ -1,4 +1,4 @@
-package com.ken.gae.quiz.model;
+package com.ken.gcp.quiz.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.ken.gae.quiz.config;
+package com.ken.gcp.quiz.config;
 
 import java.io.IOException;
 
