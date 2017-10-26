@@ -51,13 +51,14 @@
 			<artifactId>google-api-services-plus</artifactId>
 			<version>v1-rev530-1.23.0</version>
 		</dependency>
-		<!-- tag::tests[] -->
+
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.6</version>
 		</dependency>
-		<!-- end::tests[] -->
+
 	</dependencies>
 
 	<properties>
@@ -94,7 +95,7 @@
 				<configuration>
 					<repository>${docker.image.prefix}/${project.artifactId}</repository>
 				</configuration>
-				
+
 			</plugin>
 		</plugins>
 	</build>

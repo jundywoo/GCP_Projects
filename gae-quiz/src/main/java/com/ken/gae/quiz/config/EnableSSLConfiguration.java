@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,30 +43,35 @@ public class EnableSSLConfiguration {
 
 		final String keystoreFilePath = keystoreFile.getFile().getAbsolutePath();
 
-		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-		connector.setScheme("https");
-		connector.setPort(serverPortSSL);
-		connector.setRedirectPort(serverPort);
-		connector.setSecure(true);
+		String[] aliases = StringUtils.split(keystoreAlias, '|');
 
-		connector.setAttribute("protocol", "org.apache.coyote.http11.Http11Protocol");
-		connector.setAttribute("connectionTimeout", "20000");
-		connector.setAttribute("compression", "force");
-		connector.setAttribute("SSLEnabled", true);
-		connector.setAttribute("sslProtocol", "TLS");
-		connector.setAttribute("sslEnabledProtocols", "TLSv1,TLSv1.1,TLSv1.2");
-		connector.setAttribute("ciphers",
-				"TLS_DHE_RSA_WITH_AES_128_CBC_SHA256," + "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256,"
-						+ "TLS_DHE_DSS_WITH_AES_128_CBC_SHA," + "TLS_RSA_WITH_AES_128_CBC_SHA,"
-						+ "TLS_RSA_WITH_AES_128_CBC_SHA256," + "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,"
-						+ "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256");
-		connector.setAttribute("clientAuth", false);
-		connector.setAttribute("keystoreFile", keystoreFilePath);
-		connector.setAttribute("keystoreType", keystoreType);
-		connector.setAttribute("keystorePass", keystorePassword);
-		connector.setAttribute("keystoreAlias", keystoreAlias);
+		for (String alias : aliases) {
+			Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+			connector.setScheme("https");
+			connector.setPort(serverPortSSL);
+			connector.setRedirectPort(serverPort);
+			connector.setSecure(true);
 
-		tomcat.addAdditionalTomcatConnectors(connector);
+			connector.setAttribute("protocol", "org.apache.coyote.http11.Http11Protocol");
+			connector.setAttribute("connectionTimeout", "20000");
+			connector.setAttribute("compression", "force");
+			connector.setAttribute("SSLEnabled", true);
+			connector.setAttribute("sslProtocol", "TLS");
+			connector.setAttribute("sslEnabledProtocols", "TLSv1,TLSv1.1,TLSv1.2");
+			connector.setAttribute("ciphers",
+					"TLS_DHE_RSA_WITH_AES_128_CBC_SHA256," + "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256,"
+							+ "TLS_DHE_DSS_WITH_AES_128_CBC_SHA," + "TLS_RSA_WITH_AES_128_CBC_SHA,"
+							+ "TLS_RSA_WITH_AES_128_CBC_SHA256," + "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,"
+							+ "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256");
+			connector.setAttribute("clientAuth", false);
+			connector.setAttribute("keystoreFile", keystoreFilePath);
+			connector.setAttribute("keystoreType", keystoreType);
+			connector.setAttribute("keystorePass", keystorePassword);
+			connector.setAttribute("keystoreAlias", alias);
+
+			tomcat.addAdditionalTomcatConnectors(connector);
+		}
+
 		return tomcat;
 	}
 
