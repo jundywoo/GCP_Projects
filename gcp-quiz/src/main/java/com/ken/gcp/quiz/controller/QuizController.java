@@ -1,4 +1,4 @@
-package com.ken.gcp.quiz;
+package com.ken.gcp.quiz.controller;
 
 import java.io.IOException;
 import java.util.List;
