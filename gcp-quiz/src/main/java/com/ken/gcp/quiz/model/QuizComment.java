@@ -6,50 +6,39 @@ import java.util.TimeZone;
 
 public class QuizComment implements Comparable<QuizComment> {
 
-	public static final String NUM = "num";
+	public static final String TABLE_NAME_QUIZ_COMMENT = "quiz_comment";
+
+	// Primary Key
+	public static final String QUIZ_ID = "quiz_id";
+
+	// Data field
 	public static final String AUTHOR = "author";
 	public static final String DATE = "date";
 	public static final String COMMENT = "comment";
 
-	private Long num;
+	private String quizId;
 	private String author;
 	private Date date;
 	private String comment;
 
-	public Long getNum() {
-		return num;
-	}
-
-	public void setNum(Long num) {
-		this.num = num;
+	public String getQuizId() {
+		return quizId;
 	}
 
 	public String getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-
 	public Date getDate() {
 		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 	public String getComment() {
 		return comment;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
-	public QuizComment num(Long num) {
-		this.num = num;
+	public QuizComment quizId(String quizId) {
+		this.quizId = quizId;
 		return this;
 	}
 
