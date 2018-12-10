@@ -8,8 +8,8 @@ public final class MyValueUtils {
 		// blank
 	}
 
-	public static StringValue noIndexString(String string) {
-		return StringValue.newBuilder(string).setExcludeFromIndexes(true).build();
+	public static StringValue noIndexString(final String string) {
+		return StringValue.newBuilder(string != null ? string : "").setExcludeFromIndexes(true).build();
 	}
 
 }

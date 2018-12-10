@@ -1,83 +1,82 @@
 package com.ken.gcp.quiz.model;
 
-public class Quiz {
+public class QuizEntity {
 
+	public static final String TABLE_NAME_QUIZ_ENTITY = "quiz_entity";
+
+	// Primary key
+	public static final String CATEGORY = "category";
 	public static final String NUM = "num";
+
+	// Data fields
 	public static final String TITLE = "title";
 	public static final String CHOICES = "choices";
 	public static final String DESC = "desc";
 	public static final String ANSWER = "answer";
 
+	private String category;
 	private Long num;
 	private String title;
 	private String desc;
-
 	private String choices;
 	private String answer;
 
-	public Quiz num(Long num) {
+	public QuizEntity category(final String category) {
+		this.category = category;
+		return this;
+	}
+
+	public QuizEntity num(final Long num) {
 		this.num = num;
 		return this;
 	}
 
-	public Quiz title(String title) {
+	public QuizEntity title(final String title) {
 		this.title = title;
 		return this;
 	}
 
-	public Quiz choices(String choices) {
+	public QuizEntity choices(final String choices) {
 		this.choices = choices;
 		return this;
 	}
 
-	public Quiz desc(String desc) {
+	public QuizEntity desc(final String desc) {
 		this.desc = desc;
 		return this;
 	}
 
-	public Quiz answer(String answer) {
+	public QuizEntity answer(final String answer) {
 		this.answer = answer;
 		return this;
-	}
-
-	public Long getNum() {
-		return num;
-	}
-
-	public void setNum(Long num) {
-		this.num = num;
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	public String getChoices() {
 		return choices;
-	}
-
-	public void setChoices(String choices) {
-		this.choices = choices;
 	}
 
 	public String getAnswer() {
 		return answer;
 	}
 
-	public void setAnswer(String answer) {
-		this.answer = answer;
-	}
-
 	public String getDesc() {
 		return desc;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public String getCategory() {
+		return category;
+	}
+
+	public Long getNum() {
+		return num;
+	}
+
+	public String getKey() {
+		return category + "_" + num;
 	}
 
 }
