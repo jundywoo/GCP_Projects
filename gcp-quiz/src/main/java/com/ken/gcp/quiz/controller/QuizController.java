@@ -1,6 +1,8 @@
 package com.ken.gcp.quiz.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -171,11 +173,16 @@ public class QuizController {
 
 			final List<QuizComment> comments = commentDao.readCommenByQuiz(category, id);
 			htmlString += "<tr><td><b>Question</b></td><td><h1><pre>" + quiz.getTitle() + "</pre></h1></td></tr>" //
-					+ "<tr><td><b>Choices<b></td><td><h3><pre>" + quiz.getChoices() + "</pre></h3></td></tr>" //
+					+ "<tr><td><b>Choices<b></td><td><h3><pre id='cleanAnswer'>" + quiz.getChoices() //
+					+ "</pre><pre id='goodAnswer'>" + addGoodAnswer(quiz.getChoices(), quiz.getAnswer())
+					+ "</pre></h3></td></tr>" //
 					+ "<tr><td><b>Answer</b></td><td><h3><font id='answerBox' color='red'>"
 					+ "<div id='divAnswer' style='display: none'>" + quiz.getAnswer()
-					+ "</div></h3></font><button id='btnAnswer' onClick='getElementById(\"divAnswer\").style.display=\"block\"; "
-					+ "getElementById(\"btnAnswer\").style.display=\"none\"; ' >Show Answer</button></td></tr>"
+					+ "</div></h3></font><button id='btnAnswer' onClick='" //
+					+ "getElementById(\"divAnswer\").style.display=\"block\"; "
+					+ "getElementById(\"goodAnswer\").style.display=\"block\"; "
+					+ "getElementById(\"cleanAnswer\").style.display=\"none\"; "
+					+ "getElementById(\"btnAnswer\").style.display=\"none\";' >Show Answer</button></td></tr>"
 					+ "<tr><td><b>" + (comments.isEmpty() ? "No Comment" : "Comment (" + comments.size() + ")")
 					+ "</td><td>";
 
@@ -216,6 +223,28 @@ public class QuizController {
 
 		htmlString += "</body><html>";
 		return htmlString;
+	}
+
+	private String addGoodAnswer(String choices, String answer) {
+		StringBuilder builder = new StringBuilder();
+
+		BufferedReader reader = new BufferedReader(new StringReader(answer));
+		String line;
+		try {
+			while ((line = reader.readLine()) != null) {
+				char first = line.charAt(0);
+				char second = line.charAt(1);
+				if (second == '.' && answer.indexOf(first) >= 0) {
+					builder.append("<font color=\"red\"><b>").append(line).append("</b></font>");
+				} else {
+					builder.append(line);
+				}
+			}
+		} catch (IOException e) {
+			return choices;
+		}
+
+		return builder.toString();
 	}
 
 }
