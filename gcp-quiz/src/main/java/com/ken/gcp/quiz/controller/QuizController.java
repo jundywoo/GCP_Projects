@@ -45,7 +45,7 @@ public class QuizController {
 	private static final Log LOG = LogFactory.getLog(QuizController.class);
 	private static final String HTML_HEADER = "<!DOCTYPE html><html><head><title>";
 	private static final String HTML_HEADER2 = "</title><link rel=\"shortcut icon\" href=\"https://storage.googleapis.com/kennieng-quiz/quiz-icon.ico\"></head><body>";
-	private static final String HTML_BODY_END = "<script type=\"text/javascript\" src=\"//js.users.51.la/19799255.js\"></script></body><html>";
+	private static final String HTML_BODY_END = "<script type=\"text/javascript\" src=\"http://js.users.51.la/19799255.js\"></script></body><html>";
 
 	@RequestMapping(path = "/", method = RequestMethod.GET)
 	public String index() {
