@@ -1,8 +1,6 @@
 package com.ken.gcp.quiz.controller;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +41,7 @@ public class QuizController {
 	private static final Log LOG = LogFactory.getLog(QuizController.class);
 	private static final String HTML_HEADER = "<!DOCTYPE html><html><head><title>";
 	private static final String HTML_HEADER2 = "</title><link rel=\"shortcut icon\" href=\"https://storage.googleapis.com/kennieng-quiz/quiz-icon.ico\"></head><body>";
+	private static final String EOL = System.getProperty("line.separator");
 
 	@RequestMapping(path = "/", method = RequestMethod.GET)
 	public String index() {
@@ -173,8 +172,8 @@ public class QuizController {
 
 			final List<QuizComment> comments = commentDao.readCommenByQuiz(category, id);
 			htmlString += "<tr><td><b>Question</b></td><td><h1><pre>" + quiz.getTitle() + "</pre></h1></td></tr>" //
-					+ "<tr><td><b>Choices<b></td><td><h3><pre id='cleanAnswer'>" + quiz.getChoices() //
-					+ "</pre><pre id='goodAnswer'>" + addGoodAnswer(quiz.getChoices(), quiz.getAnswer())
+					+ "<tr><td><b>Choices<b></td><td><h3><pre id='cleanAnswer'>" + addGoodAnswer(quiz.getChoices(), "") //
+					+ "</pre><pre id='goodAnswer' style='display: none'>" + addGoodAnswer(quiz.getChoices(), quiz.getAnswer())
 					+ "</pre></h3></td></tr>" //
 					+ "<tr><td><b>Answer</b></td><td><h3><font id='answerBox' color='red'>"
 					+ "<div id='divAnswer' style='display: none'>" + quiz.getAnswer()
@@ -227,24 +226,28 @@ public class QuizController {
 
 	private String addGoodAnswer(String choices, String answer) {
 		StringBuilder builder = new StringBuilder();
-
-		BufferedReader reader = new BufferedReader(new StringReader(answer));
-		String line;
-		try {
-			while ((line = reader.readLine()) != null) {
-				if (line.length() > 1) {
-					char first = line.charAt(0);
-					char second = line.charAt(1);
-					if (second == '.' && answer.indexOf(first) >= 0) {
-						builder.append("<font color=\"red\"><b>").append(line).append("</b></font>");
-					} else {
-						builder.append(line);
+		boolean opened = false;
+		String[] lines = choices.split(EOL);
+		for (String line : lines) {
+			if (line.length() > 1) {
+				char first = line.charAt(0);
+				char second = line.charAt(1);
+				if (second == '.') {
+					builder.append("<p>");
+					if (answer.indexOf(first) >= 0) {
+						opened = true;
+						builder.append("<font color=\"red\"><b>");
 					}
 				}
-				builder.append(System.getProperty("line.separator"));
+
+				builder.append(line);
+			} else {
+				if (opened) {
+					opened = false;
+					builder.append("</b></font>");
+				}
+				builder.append("</p>");
 			}
-		} catch (IOException e) {
-			return choices;
 		}
 
 		return builder.toString();
