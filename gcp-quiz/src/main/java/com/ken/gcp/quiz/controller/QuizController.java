@@ -21,6 +21,7 @@ import com.ken.gcp.quiz.dao.QuizCommentDao;
 import com.ken.gcp.quiz.dao.QuizDao;
 import com.ken.gcp.quiz.model.QuizComment;
 import com.ken.gcp.quiz.model.QuizEntity;
+import com.ken.gcp.quiz.service.QuizValidationService;
 import com.ken.gcp.quiz.service.StaticFileService;
 
 @RestController()
@@ -34,6 +35,9 @@ public class QuizController {
 
 	@Autowired
 	private StaticFileService staticFileService;
+
+	@Autowired
+	private QuizValidationService quizValidationService;
 
 	@Value("${server.index.page:classpath:/static/index.html}")
 	private Resource indexPage;
@@ -118,7 +122,7 @@ public class QuizController {
 				.category(category) //
 				.num(nextNum) //
 				.answer(answer) //
-				.choices(choices) //
+				.choices(quizValidationService.validate(choices)) //
 				.title(title) //
 				.desc(desc);
 		try {
@@ -171,11 +175,17 @@ public class QuizController {
 
 			final List<QuizComment> comments = commentDao.readCommenByQuiz(category, id);
 			htmlString += "<tr><td><b>Question</b></td><td><h1><pre>" + quiz.getTitle() + "</pre></h1></td></tr>" //
-					+ "<tr><td><b>Choices<b></td><td><h3><pre>" + quiz.getChoices() + "</pre></h3></td></tr>" //
+					+ "<tr><td><b>Choices<b></td><td><h3><div id='cleanAnswer'>"
+					+ quizValidationService.formatAnswer(quiz.getChoices(), "") //
+					+ "</div><div id='goodAnswer' style='display: none'>"
+					+ quizValidationService.formatAnswer(quiz.getChoices(), quiz.getAnswer()) + "</div></h3></td></tr>" //
 					+ "<tr><td><b>Answer</b></td><td><h3><font id='answerBox' color='red'>"
 					+ "<div id='divAnswer' style='display: none'>" + quiz.getAnswer()
-					+ "</div></h3></font><button id='btnAnswer' onClick='getElementById(\"divAnswer\").style.display=\"block\"; "
-					+ "getElementById(\"btnAnswer\").style.display=\"none\"; ' >Show Answer</button></td></tr>"
+					+ "</div></h3></font><button id='btnAnswer' onClick='" //
+					+ "getElementById(\"divAnswer\").style.display=\"block\"; "
+					+ "getElementById(\"goodAnswer\").style.display=\"block\"; "
+					+ "getElementById(\"cleanAnswer\").style.display=\"none\"; "
+					+ "getElementById(\"btnAnswer\").style.display=\"none\";' >Show Answer</button></td></tr>"
 					+ "<tr><td><b>" + (comments.isEmpty() ? "No Comment" : "Comment (" + comments.size() + ")")
 					+ "</td><td>";
 
