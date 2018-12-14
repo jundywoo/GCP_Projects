@@ -172,9 +172,9 @@ public class QuizController {
 
 			final List<QuizComment> comments = commentDao.readCommenByQuiz(category, id);
 			htmlString += "<tr><td><b>Question</b></td><td><h1><pre>" + quiz.getTitle() + "</pre></h1></td></tr>" //
-					+ "<tr><td><b>Choices<b></td><td><h3><pre id='cleanAnswer'>" + quiz.getChoices() //
-					+ "</pre><pre id='goodAnswer' style='display: none'>"
-					+ addGoodAnswer(quiz.getChoices(), quiz.getAnswer()) + "</pre></h3></td></tr>" //
+					+ "<tr><td><b>Choices<b></td><td><h3><div id='cleanAnswer'>" + addGoodAnswer(quiz.getChoices(), "") //
+					+ "</div><div id='goodAnswer' style='display: none'>"
+					+ addGoodAnswer(quiz.getChoices(), quiz.getAnswer()) + "</div></h3></td></tr>" //
 					+ "<tr><td><b>Answer</b></td><td><h3><font id='answerBox' color='red'>"
 					+ "<div id='divAnswer' style='display: none'>" + quiz.getAnswer()
 					+ "</div></h3></font><button id='btnAnswer' onClick='" //
@@ -246,7 +246,8 @@ public class QuizController {
 					opened = false;
 					builder.append("</b></font>");
 				}
-				builder.append("</p><br/>");
+
+				builder.append("</p>");
 			}
 		}
 
