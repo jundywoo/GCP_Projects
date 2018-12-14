@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mvn clean deploy
+
 version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
 echo "Deploying $version"
 component="kennieng.gcp-quiz"
