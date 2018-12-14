@@ -21,6 +21,7 @@ import com.ken.gcp.quiz.dao.QuizCommentDao;
 import com.ken.gcp.quiz.dao.QuizDao;
 import com.ken.gcp.quiz.model.QuizComment;
 import com.ken.gcp.quiz.model.QuizEntity;
+import com.ken.gcp.quiz.service.QuizValidationService;
 import com.ken.gcp.quiz.service.StaticFileService;
 
 @RestController()
@@ -35,13 +36,15 @@ public class QuizController {
 	@Autowired
 	private StaticFileService staticFileService;
 
+	@Autowired
+	private QuizValidationService quizValidationService;
+
 	@Value("${server.index.page:classpath:/static/index.html}")
 	private Resource indexPage;
 
 	private static final Log LOG = LogFactory.getLog(QuizController.class);
 	private static final String HTML_HEADER = "<!DOCTYPE html><html><head><title>";
 	private static final String HTML_HEADER2 = "</title><link rel=\"shortcut icon\" href=\"https://storage.googleapis.com/kennieng-quiz/quiz-icon.ico\"></head><body>";
-	private static final String EOL = System.getProperty("line.separator");
 
 	@RequestMapping(path = "/", method = RequestMethod.GET)
 	public String index() {
@@ -119,7 +122,7 @@ public class QuizController {
 				.category(category) //
 				.num(nextNum) //
 				.answer(answer) //
-				.choices(choices) //
+				.choices(quizValidationService.validate(choices)) //
 				.title(title) //
 				.desc(desc);
 		try {
@@ -172,9 +175,10 @@ public class QuizController {
 
 			final List<QuizComment> comments = commentDao.readCommenByQuiz(category, id);
 			htmlString += "<tr><td><b>Question</b></td><td><h1><pre>" + quiz.getTitle() + "</pre></h1></td></tr>" //
-					+ "<tr><td><b>Choices<b></td><td><h3><div id='cleanAnswer'>" + addGoodAnswer(quiz.getChoices(), "") //
+					+ "<tr><td><b>Choices<b></td><td><h3><div id='cleanAnswer'>"
+					+ quizValidationService.formatAnswer(quiz.getChoices(), "") //
 					+ "</div><div id='goodAnswer' style='display: none'>"
-					+ addGoodAnswer(quiz.getChoices(), quiz.getAnswer()) + "</div></h3></td></tr>" //
+					+ quizValidationService.formatAnswer(quiz.getChoices(), quiz.getAnswer()) + "</div></h3></td></tr>" //
 					+ "<tr><td><b>Answer</b></td><td><h3><font id='answerBox' color='red'>"
 					+ "<div id='divAnswer' style='display: none'>" + quiz.getAnswer()
 					+ "</div></h3></font><button id='btnAnswer' onClick='" //
@@ -222,36 +226,6 @@ public class QuizController {
 
 		htmlString += "</body><html>";
 		return htmlString;
-	}
-
-	private String addGoodAnswer(String choices, String answer) {
-		StringBuilder builder = new StringBuilder();
-		boolean opened = false;
-		String[] lines = choices.split(EOL);
-		for (String line : lines) {
-			if (line.length() > 1) {
-				char first = line.charAt(0);
-				char second = line.charAt(1);
-				if (second == '.') {
-					builder.append("<p>");
-					if (answer.indexOf(first) >= 0) {
-						opened = true;
-						builder.append("<font color=\"red\"><b>");
-					}
-				}
-
-				builder.append(line);
-			} else {
-				if (opened) {
-					opened = false;
-					builder.append("</b></font>");
-				}
-
-				builder.append("</p>");
-			}
-		}
-
-		return builder.toString();
 	}
 
 }
