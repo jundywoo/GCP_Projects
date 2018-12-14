@@ -45,6 +45,7 @@ public class QuizController {
 	private static final Log LOG = LogFactory.getLog(QuizController.class);
 	private static final String HTML_HEADER = "<!DOCTYPE html><html><head><title>";
 	private static final String HTML_HEADER2 = "</title><link rel=\"shortcut icon\" href=\"https://storage.googleapis.com/kennieng-quiz/quiz-icon.ico\"></head><body>";
+	private static final String HTML_BODY_END = "<script type=\"text/javascript\" src=\"//js.users.51.la/19799255.js\"></script></body><html>";
 
 	@RequestMapping(path = "/", method = RequestMethod.GET)
 	public String index() {
@@ -81,7 +82,7 @@ public class QuizController {
 			htmlString += "<p>No Question in the list";
 		}
 
-		htmlString += "</body><html>";
+		htmlString += HTML_BODY_END;
 		return htmlString;
 	}
 
@@ -106,7 +107,7 @@ public class QuizController {
 				+ "<tr><td>Choices: </td><td><textarea name='Choices' form='quizAdd' rows=\"15\" cols=\"200\"></textarea></td></tr>" //
 				+ "<tr><td>Answer: </td><td><input type='text' name='Answer'></td></tr></table>" //
 				+ "<input type='submit'/>" //
-				+ "</form></body><html>";
+				+ "</form>" + HTML_BODY_END;
 		return htmlString;
 	}
 
@@ -224,7 +225,7 @@ public class QuizController {
 			htmlString += "&nbsp;&nbsp;&nbsp;&nbsp;<a href='/" + category + "/" + (id + 1) + "'>Next Quiz</a>";
 		}
 
-		htmlString += "</body><html>";
+		htmlString += HTML_BODY_END;
 		return htmlString;
 	}
 
