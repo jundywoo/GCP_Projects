@@ -232,13 +232,16 @@ public class QuizController {
 		String line;
 		try {
 			while ((line = reader.readLine()) != null) {
-				char first = line.charAt(0);
-				char second = line.charAt(1);
-				if (second == '.' && answer.indexOf(first) >= 0) {
-					builder.append("<font color=\"red\"><b>").append(line).append("</b></font>");
-				} else {
-					builder.append(line);
+				if (line.length() > 1) {
+					char first = line.charAt(0);
+					char second = line.charAt(1);
+					if (second == '.' && answer.indexOf(first) >= 0) {
+						builder.append("<font color=\"red\"><b>").append(line).append("</b></font>");
+					} else {
+						builder.append(line);
+					}
 				}
+				builder.append(System.getProperty("line.separator"));
 			}
 		} catch (IOException e) {
 			return choices;
