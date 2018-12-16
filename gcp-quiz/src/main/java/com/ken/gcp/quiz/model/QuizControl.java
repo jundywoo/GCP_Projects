@@ -4,18 +4,22 @@ public class QuizControl {
 
 	public static final String TABLE_NAME_QUIZ_CONTROL = "quiz_control";
 
-	public static final String CONTROL_FIELD = "control_field";
+	public static final String CATEGORY = "category";
 	public static final String MAX_NUM = "max_num";
 	public static final String MY_CHECK = "my_check";
 	public static final String ALLOW_COMMENT = "allow_comment";
+	public static final String DESC = "desc";
+	public static final String AVAILABLE = "available";
 
-	private String controlField;
+	private String category;
 	private Long maxNum;
 	private Long myCheck;
 	private boolean allowComment;
+	private boolean isAvailable;
+	private String desciption;
 
-	public QuizControl controlField(final String controlField) {
-		this.controlField = controlField;
+	public QuizControl category(final String category) {
+		this.category = category;
 		return this;
 	}
 
@@ -34,8 +38,18 @@ public class QuizControl {
 		return this;
 	}
 
-	public String getControlField() {
-		return controlField;
+	public QuizControl available(final boolean isAvailable) {
+		this.isAvailable = isAvailable;
+		return this;
+	}
+
+	public QuizControl desciption(final String desc) {
+		this.desciption = desc;
+		return this;
+	}
+
+	public String getCategory() {
+		return category;
 	}
 
 	public Long getMaxNum() {
@@ -48,6 +62,14 @@ public class QuizControl {
 
 	public boolean isAllowComment() {
 		return allowComment;
+	}
+
+	public boolean isAvailable() {
+		return isAvailable;
+	}
+
+	public String getDesciption() {
+		return desciption;
 	}
 
 }
