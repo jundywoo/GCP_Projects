@@ -1,6 +1,6 @@
 package com.ken.gcp.quiz.dao;
 
-import static com.ken.gcp.quiz.model.QuizVideo.DESC;
+import static com.ken.gcp.quiz.model.QuizVideo.DESCRIPTION;
 import static com.ken.gcp.quiz.model.QuizVideo.LINK;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class QuizVideoDao extends GCPSupportDao {
 
 			final QuizVideo video = new QuizVideo() //
 					.link(result.getString(LINK)) //
-					.desciption(result.getString(DESC));
+					.desciption(result.getString(DESCRIPTION));
 
 			videos.add(video);
 		}

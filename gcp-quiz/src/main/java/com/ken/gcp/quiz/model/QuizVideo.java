@@ -3,7 +3,7 @@ package com.ken.gcp.quiz.model;
 public class QuizVideo implements Comparable<QuizVideo> {
 
 	public static final String CATEGORY = "category";
-	public static final String DESC = "desc";
+	public static final String DESCRIPTION = "desciption";
 	public static final String LINK = "link";
 
 	private String category;
