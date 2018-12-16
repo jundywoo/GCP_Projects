@@ -3,12 +3,12 @@ package com.ken.gcp.quiz.model;
 public class QuizVideo implements Comparable<QuizVideo> {
 
 	public static final String CATEGORY = "category";
-	public static final String DESCRIPTION = "desciption";
+	public static final String DESCRIPTION = "description";
 	public static final String LINK = "link";
 
 	private String category;
 	private String link;
-	private String desciption;
+	private String description;
 
 	public QuizVideo category(final String category) {
 		this.category = category;
@@ -20,8 +20,8 @@ public class QuizVideo implements Comparable<QuizVideo> {
 		return this;
 	}
 
-	public QuizVideo desciption(final String desc) {
-		this.desciption = desc;
+	public QuizVideo description(final String desc) {
+		this.description = desc;
 		return this;
 	}
 
@@ -33,13 +33,13 @@ public class QuizVideo implements Comparable<QuizVideo> {
 		return link;
 	}
 
-	public String getDesciption() {
-		return desciption;
+	public String getDescription() {
+		return description;
 	}
 
 	@Override
 	public int compareTo(QuizVideo other) {
-		return this.desciption.compareTo(other.desciption);
+		return this.description.compareTo(other.description);
 	}
 
 }

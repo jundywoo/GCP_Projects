@@ -38,7 +38,7 @@ public class QuizVideoDao extends GCPSupportDao {
 
 			final QuizVideo video = new QuizVideo() //
 					.link(result.getString(LINK)) //
-					.desciption(result.getString(DESCRIPTION));
+					.description(result.getString(DESCRIPTION));
 
 			videos.add(video);
 		}

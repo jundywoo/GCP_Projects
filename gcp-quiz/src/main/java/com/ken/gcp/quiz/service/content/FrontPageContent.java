@@ -57,7 +57,7 @@ public class FrontPageContent {
 
 		for (QuizVideo video : quizVideos) {
 			content.append("<p><a href='").append(video.getLink()).append("' target='_blank'>") //
-					.append(video.getDesciption()).append("</a></p>");
+					.append(video.getDescription()).append("</a></p>");
 		}
 
 		return content.toString();
