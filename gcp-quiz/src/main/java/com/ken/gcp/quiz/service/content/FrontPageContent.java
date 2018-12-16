@@ -8,7 +8,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import com.ken.gcp.quiz.dao.QuizControlDao;
+import com.ken.gcp.quiz.dao.QuizVideoDao;
 import com.ken.gcp.quiz.model.QuizControl;
+import com.ken.gcp.quiz.model.QuizVideo;
 import com.ken.gcp.quiz.service.StaticFileService;
 
 @Component
@@ -16,6 +18,8 @@ public class FrontPageContent {
 
 	private static final String PLACE_HOST = "\\$host\\$";
 	private static final String PLACE_CATEGOIES = "\\$quiz_categories\\$";
+	private static final String PLACE_GCP_VIDEO = "\\$gcp_video\\$";
+	private static final String PLACE_AWS_VIDEO = "\\$aws_video\\$";
 
 	@Value("${server.index.page:classpath:/static/index.html}")
 	private Resource indexPage;
@@ -26,6 +30,9 @@ public class FrontPageContent {
 	@Autowired
 	private QuizControlDao quizControlDao;
 
+	@Autowired
+	private QuizVideoDao quizVideoDao;
+
 	public String getContent() {
 		final String hostname = staticFileService.hostname();
 		String htmlString = staticFileService.readFileToEnd(indexPage);
@@ -35,22 +42,34 @@ public class FrontPageContent {
 					+ "<font color='red'>Page not found</font><P>" + "<h3>This is running on GCP " + hostname
 					+ " by docker container</h3><html>";
 		} else {
-			String categoriesConent = getCategoriesContent();
 			htmlString = htmlString.replaceAll(PLACE_HOST, hostname);
-			htmlString = htmlString.replaceAll(PLACE_CATEGOIES, categoriesConent);
+			htmlString = htmlString.replaceAll(PLACE_CATEGOIES, getCategoriesContent());
+			htmlString = htmlString.replaceAll(PLACE_GCP_VIDEO, getVideosContent("GCP"));
+			htmlString = htmlString.replaceAll(PLACE_AWS_VIDEO, getVideosContent("AWS"));
 		}
 
 		return htmlString;
+	}
+
+	private String getVideosContent(String category) {
+		List<QuizVideo> quizVideos = quizVideoDao.getQuizVideos(category);
+		StringBuilder content = new StringBuilder();
+
+		for (QuizVideo video : quizVideos) {
+			content.append("<p><a href='").append(video.getLink()).append("' target='_blank'>") //
+					.append(video.getLink()).append("</a></p>");
+		}
+
+		return content.toString();
 	}
 
 	private String getCategoriesContent() {
 		List<QuizControl> availableControls = quizControlDao.getAvailableControls();
 		StringBuilder content = new StringBuilder();
 
-		// Goto <a href='/aws-quiz-cda'>AWS Quiz - Developer Associate</a><p>
 		for (QuizControl control : availableControls) {
-			content.append("Goto <a href='").append(control.getCategory()).append("'>") //
-					.append(control.getDesciption()).append("</a><p>");
+			content.append("<p>Goto <a href='/").append(control.getCategory()).append("/'>") //
+					.append(control.getDesciption()).append("</a></p>");
 		}
 
 		return content.toString();
