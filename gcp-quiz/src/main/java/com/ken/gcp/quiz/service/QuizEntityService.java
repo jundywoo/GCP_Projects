@@ -1,11 +1,22 @@
 package com.ken.gcp.quiz.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ken.gcp.quiz.dao.QuizControlDao;
+import com.ken.gcp.quiz.dao.QuizEntityDao;
+import com.ken.gcp.quiz.model.QuizEntity;
+
 @Service
-public class QuizValidationService {
+public class QuizEntityService {
 
 	private static final String EOL = System.getProperty("line.separator");
+
+	@Autowired
+	private QuizEntityDao quizEntityDao;
+
+	@Autowired
+	private QuizControlDao quizControlDao;
 
 	public String formatAnswer(String choices, String answer) {
 		StringBuilder builder = new StringBuilder();
@@ -64,6 +75,22 @@ public class QuizValidationService {
 			builder.append(EOL);
 		}
 		return builder.toString();
+	}
+
+	public Long addQuizEntity(String category, String title, String desc, String choices, String answer) {
+		final Long nextNum = quizControlDao.getMyCheck(category) + 1;
+		final QuizEntity quiz = new QuizEntity() //
+				.category(category) //
+				.num(nextNum) //
+				.answer(answer) //
+				.choices(validate(choices)) //
+				.title(title) //
+				.desc(desc);
+
+		quizEntityDao.addQuiz(quiz);
+		quizControlDao.updateNextNum(category, nextNum);
+
+		return nextNum;
 	}
 
 }

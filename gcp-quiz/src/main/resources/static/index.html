@@ -5,42 +5,12 @@
         </head>
         <body>
                 <h1>Hi, Welcome to Cloud Certification Quiz Home page</h1>
-                Goto <a href='/aws-quiz-cda'>AWS Quiz - Developer Associate</a>
-                <p>
-                Goto <a href='/aws-quiz-saa'>AWS Quiz - Solution Architech Associate</a>
-                <p>
-                Goto <a href='/gcp-quiz-ace'>GCP Quiz - Associate Cloud Engineer (Official Pratise)</a>
-                <p><p>
-                Goto <a href='/gcp-quiz-acg'>GCP Quiz - Associate Cloud Engineer (Acloud.guru Pratise)</a>
-                <p><p>
+                
+				$quiz_categories$
                 
                 <div style="border-style: groove; width: 1200">
 	                <a href="#" id="gcpClick" onclick="show('gcp')">Click to open GCP video</a>
 					<div id="gcpVideo" style="border-style: groove; display: none">
-						<p><a href="http://www.bilibili.com/video/av37445607" target="_blank">GCP S1-Course Intro and Outline</a></p>
-						
-						<p><a href="http://www.bilibili.com/video/av37445818" target="_blank">GCP S2-Google Certified ACE Exam Guide (Blueprint)</a></p>
-						
-						<p><a href="http://www.bilibili.com/video/av37483842" target="_blank">GCP S3.1-Free-Tier GCP Accounts</a></p>
-						<p><a href="http://www.bilibili.com/video/av37483909" target="_blank">GCP S3.2-Create Free-Tier GCP Account (Lab)</a></p>
-						<p><a href="http://www.bilibili.com/video/av37483969" target="_blank">GCP S3.3-Explore GCP Console (Lab)</a></p>
-						<p><a href="http://www.bilibili.com/video/av37484043" target="_blank">GCP S3.4-Set Up Billing Export (Lab)</a></p>
-						<p><a href="http://www.bilibili.com/video/av37484087" target="_blank">GCP S3.5-Set Up Billing Alert (Lab)</a></p>
-						<p><a href="http://www.bilibili.com/video/av37484131" target="_blank">GCP S3.6-Set Up Non-Admin User Access (Lab)</a></p>
-						<p><a href="http://www.bilibili.com/video/av37484192" target="_blank">GCP S3.7-Cloud Shell and Editor (Lab)</a></p>
-						<p><a href="http://www.bilibili.com/video/av37484274" target="_blank">GCP S3.8-Data Flows</a></p>
-						<p><a href="http://www.bilibili.com/video/av37683575" target="_blank">GCP S3.9-Update Course Lab Files (Lab)</a></p>
-						
-						<p><a href="http://www.bilibili.com/video/av37484562" target="_blank">GCP S4.1-GCS- Google Cloud Storage (Lab)</a></p>
-						<p><a href="http://www.bilibili.com/video/av37484633" target="_blank">GCP S4.2-GCS via gsutil in Command Line (Lab)</a></p>
-						<p><a href="http://www.bilibili.com/video/av37484675" target="_blank">GCP S4.3-Starting Our First VM (Lab)</a></p>
-						<p><a href="http://www.bilibili.com/video/av37484721" target="_blank">GCP S4.4-Rundown on gcloud</a></p>
-						<p><a href="http://www.bilibili.com/video/av37685076" target="_blank">GCP S4.5-GCE In and Out (Lab)</a></p>
-						<p><a href="http://www.bilibili.com/video/av37685287" target="_blank">GCP S4.6-GCE via Console (Lab)</a></p>
-						
-						<p><a href="http://www.bilibili.com/video/av37685384" target="_blank">GCP S5.1-GCS & GCE Challenge Lab</a></p>
-						<p><a href="http://www.bilibili.com/video/av37685451" target="_blank">GCP S5.2-GCS & GCE Challenge Lab Data Flow</a></p>
-						<p><a href="http://www.bilibili.com/video/av37910508" target="_blank">GCP S5.3-GCS & GCE Challenge Lab Demo</a></p>
 						<p>GCP S5.4-Basic Services Sample:
 							<a href="/gcp-quiz-ace/21" target="_blank">QUIZ 21</a>
 							<a href="/gcp-quiz-ace/22" target="_blank">QUIZ 22</a>
@@ -48,19 +18,15 @@
 							<a href="/gcp-quiz-ace/24" target="_blank">QUIZ 24</a>
 							<a href="/gcp-quiz-ace/25" target="_blank">QUIZ 25</a>
 						</p>
-						<p><a href="http://www.bilibili.com/video/av37685549" target="_blank">GCP S5.4-Basic Services Sample Practice Questions Breakdown</a></p>
 						
-						<p><a href="http://www.bilibili.com/video/av37685606" target="_blank">GCP S6.1-What is Security</a></p>
-						<p><a href="http://www.bilibili.com/video/av37685669" target="_blank">GCP S6.2-IAM Breakdown - Resource Hierarchy (To which thing-)</a></p>
-						<p><a href="http://www.bilibili.com/video/av37686399" target="_blank">GCP S6.3-IAM Breakdown - Permissions & Roles (Can do what-).</a></p>
-						<p><a href="http://www.bilibili.com/video/av37686524" target="_blank">GCP S6.4-IAM Breakdown - Members & Groups (Who-)</a></p>
-						<p><a href="http://www.bilibili.com/video/av37686581" target="_blank">GCP S6.5-IAM Breakdown - Policies (Bindings)</a></p>
-						<p><a href="http://www.bilibili.com/video/av37686633" target="_blank">GCP S6.6-IAM Breakdown - Wrap-Up</a></p>
-						<p><a href="http://www.bilibili.com/video/av37686674" target="_blank">GCP S6.7-Billing Access Control</a></p>
-						
-						<p><a href="http://www.bilibili.com/video/av37566277" target="_blank">GCP 97-Logistics</a></p>
-						<p><a href="http://www.bilibili.com/video/av37566334" target="_blank">GCP 98-Final Preparation</a></p>
-						<p><a href="http://www.bilibili.com/video/av37566408" target="_blank">GCP 99-Thank You and Good Luck</a></p>
+						$gcp_video$
+					</div>
+				</div>
+				<br/>
+				<div style="border-style: groove; width: 1200">
+	                <a href="#" id="awsClick" onclick="show('aws')">Click to open AWS video</a>
+					<div id="awsVideo" style="border-style: groove; display: none">
+						$aws_video$
 					</div>
 				</div>
                 <h3>This is version @project.version@ that running on GCP $host$ container</h3>
