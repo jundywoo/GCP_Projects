@@ -1,0 +1,7 @@
+indexes:
+
+- kind: quiz_video
+  ancestor: yes
+  properties:
+  - name: category
+  - name: description
