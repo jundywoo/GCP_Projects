@@ -18,7 +18,7 @@
 
 		<java.version>1.8</java.version>
 		
-		<docker.image.prefix>kennieng</docker.image.prefix>
+		<docker.image.prefix>registry.kennie-ng.cc/kennieng</docker.image.prefix>
 	</properties>
 
 	<dependencies>
@@ -125,8 +125,8 @@
 						</resource>
 					</resources>
 
-					<serverId>docker-hub</serverId>
-					<registryUrl>https://hub.docker.com/v1/</registryUrl>
+					<serverId>registry.kennie-ng.cc</serverId>
+					<registryUrl>https://registry.kennie-ng.cc/v2/</registryUrl>
 				</configuration>
 				<executions>
 					<execution>
@@ -165,11 +165,11 @@
 	<distributionManagement>
 		<repository>
 			<id>nexus-releases</id>
-			<url>http://nexus.kennie-ng.cc/nexus/content/repositories/releases/</url>
+			<url>https://nexus.kennie-ng.cc/nexus/content/repositories/releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>nexus-snapshots</id>
-			<url>http://nexus.kennie-ng.cc/nexus/content/repositories/snapshots/</url>
+			<url>https://nexus.kennie-ng.cc/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
